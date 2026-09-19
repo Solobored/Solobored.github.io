@@ -135,6 +135,34 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
   border-radius: 2px;
 }
 
+/* MATERIALS */
+.materials-list {
+  list-style: none;
+  padding: 0;
+  margin: 28px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.materials-list li {
+  padding-left: 18px;
+  border-left: 2px solid var(--line);
+  color: var(--fog);
+}
+.material-cite {
+  display: block;
+  color: var(--paper);
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+.material-cite em { color: var(--gold); font-style: italic; }
+
+#ethics h4, #reflection h4 { color: var(--teal); margin-top: 1.4em; }
+
+.ref-entry { padding-left: 28px; text-indent: -28px; color: var(--fog); font-size: 0.95rem; }
+.ref-entry em { color: var(--paper); font-style: italic; }
+.ref-note { color: var(--fog); font-size: 0.85rem; margin-top: 12px; }
+
 /* SKILLS */
 .skills-grid {
   display: grid;
