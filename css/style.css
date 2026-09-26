@@ -157,6 +157,14 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 }
 .material-cite em { color: var(--gold); font-style: italic; }
 
+.materials-added-heading {
+  margin-top: 36px;
+  font-size: 1.1rem;
+  color: var(--gold);
+  border-top: 1px dashed var(--line);
+  padding-top: 24px;
+}
+
 #ethics h4, #reflection h4 { color: var(--teal); margin-top: 1.4em; }
 
 .ref-entry { padding-left: 28px; text-indent: -28px; color: var(--fog); font-size: 0.95rem; }
