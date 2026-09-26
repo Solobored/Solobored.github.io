@@ -58,7 +58,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 .nav-name { font-family: 'Fraunces', serif; font-weight: 600; color: var(--paper); font-size: 1.05rem; }
 .nav-name:hover { text-decoration: none; color: var(--teal); }
 .nav-links { display: flex; gap: 24px; }
-.nav-links a { color: var(--fog); font-size: 0.92rem; }
+.nav-links a { color: var(--fog); font-size: 0.92rem; margin-left: 24px; }
+.nav-links a:first-child { margin-left: 0; }
 .nav-links a:hover { color: var(--paper); text-decoration: none; }
 
 /* HERO */
@@ -157,12 +158,28 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 }
 .material-cite em { color: var(--gold); font-style: italic; }
 
-.materials-added-heading {
-  margin-top: 36px;
-  font-size: 1.1rem;
+.group-heading {
+  margin-top: 34px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--gold);
-  border-top: 1px dashed var(--line);
-  padding-top: 24px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+.group-heading:first-of-type { margin-top: 20px; }
+
+.materials-list li.new-tag { position: relative; padding-left: 16px; border-left: 2px solid var(--gold); }
+.materials-list li.new-tag::before {
+  content: "New this week";
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  margin-bottom: 4px;
 }
 
 #ethics h4, #reflection h4 { color: var(--teal); margin-top: 1.4em; }
