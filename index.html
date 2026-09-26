@@ -17,6 +17,7 @@
   <div class="nav-links">
     <a href="#principles">Faith &amp; work</a>
     <a href="#projects">Projects</a>
+    <a href="#refinement">Refinement</a>
     <a href="#ethics">Ethics</a>
     <a href="#resume">Résumé</a>
     <a href="#contact">Contact</a>
@@ -159,6 +160,94 @@
         </div>
       </div>
     </article>
+  </section>
+
+  <section class="section narrow" id="refinement">
+    <h2>Project refinement &amp; ethical integration</h2>
+    <p>For this refinement, I went back to the Inventory Organizer / AI-Enhanced Data Administration project above and rebuilt it with the technical and ethical safeguards it was missing the first time. The original version worked, but it applied AI-generated reorder suggestions with no review step, had no login system or audit trail, and exported client data the same way regardless of who was asking.</p>
+
+    <h4>Challenges identified</h4>
+    <ul class="materials-list">
+      <li><span class="material-cite">Security</span> — no authentication existed at all, and early logic wasn't consistently protected against SQL injection.</li>
+      <li><span class="material-cite">Accountability</span> — nothing recorded who changed what, or when.</li>
+      <li><span class="material-cite">Scalability</span> — the dashboard loaded every item at once, which wouldn't hold up for a larger catalog.</li>
+      <li><span class="material-cite">Accessibility</span> — plain HTML with no labelled fields or status announcements.</li>
+    </ul>
+
+    <h4>Ethical considerations integrated</h4>
+    <ul class="materials-list">
+      <li><span class="material-cite">Over-automation and job displacement</span> — an AI feature that changes inventory on its own reduces the role of the person who used to do that job by hand, even when it's accurate.</li>
+      <li><span class="material-cite">Data privacy</span> — the original export included client-identifying data every time, regardless of who requested it or why.</li>
+      <li><span class="material-cite">Explainability and trust</span> — a bare AI number with no reasoning asks a client to trust output they can't evaluate.</li>
+      <li><span class="material-cite">Accountability</span> — with no login system, no action could be traced to a responsible person.</li>
+    </ul>
+
+    <h4>Refinements made</h4>
+    <p>Each of these is implemented in the actual code, not just described:</p>
+    <ul class="materials-list">
+      <li><span class="material-cite">Human-in-the-loop approval</span> — AI reorder suggestions sit in a review queue and never change inventory until an admin explicitly approves them.</li>
+      <li><span class="material-cite">Role-based access control</span> — staff can view and run AI analysis; only admins can approve suggestions or export identifying data.</li>
+      <li><span class="material-cite">Full audit logging</span> — every login, AI run, and approval decision is timestamped and attributed.</li>
+      <li><span class="material-cite">Explainable, rule-based suggestions</span> — each one comes with a plain-language rationale and a confidence level, not just a number.</li>
+      <li><span class="material-cite">Privacy-conscious export</span> — anonymized by default; full detail requires an admin to type a logged justification first.</li>
+      <li><span class="material-cite">Security hardening</span> — parameterized queries throughout and hashed passwords.</li>
+      <li><span class="material-cite">Accessibility improvements</span> — labelled form fields and an ARIA live region for status messages.</li>
+      <li><span class="material-cite">Pagination</span> — the dashboard now loads items in pages instead of all at once.</li>
+    </ul>
+
+    <h4>Code: human-in-the-loop approval</h4>
+    <p class="project-note">Nothing changes inventory automatically — a suggestion only becomes real once a named admin approves it, and that decision is logged.</p>
+    <pre class="code-block"><code>def review_suggestion(suggestion_id, decision):
+    ...
+    new_status = "approved" if decision == "approve" else "rejected"
+    db.execute(
+        "UPDATE suggestions SET status=?, reviewed_by=?, reviewed_at=? WHERE id=?",
+        (new_status, session["username"], now, suggestion_id),
+    )
+    if decision == "approve":
+        db.execute(
+            "UPDATE items SET quantity = quantity + ? WHERE id=?",
+            (s["suggested_qty"], s["item_id"]),
+        )
+    db.commit()
+    log_action(session["username"], f"SUGGESTION_{new_status.upper()}", ...)</code></pre>
+
+    <h4>Code: privacy-conscious export</h4>
+    <p class="project-note">Exporting client-identifying detail requires both an admin role and a typed justification — anonymized export is the default for everyone.</p>
+    <pre class="code-block"><code>if include_full and session.get("role") != "admin":
+    flash("Only an admin can export identifying client detail.", "error")
+    return redirect(url_for("export"))
+if include_full and not justification:
+    flash("A justification is required to export identifying client detail.", "error")
+    return redirect(url_for("export"))</code></pre>
+
+    <h4>Impact and decision-making</h4>
+    <p>The most important decision here was resisting the temptation to make the AI feature more automated instead of more accountable. It would have been simpler to let confident suggestions apply themselves — and that version would have demoed better. I chose human-in-the-loop instead because it's the more honest response to the ethical concern I kept coming back to all semester: that AI efficiency in my own field can come at the cost of someone's role unless a person deliberately stays in the loop. The system is slower now — nothing happens without a click of approval — but it's more trustworthy: a client can see exactly who approved a change, why the AI suggested it, and what data left the system.</p>
+
+    <div class="hero-actions" style="margin-top:20px;">
+      <a class="btn btn-primary" href="assets/Inventory_Refinement_Project.zip">Download project (code + tests)</a>
+      <a class="btn btn-ghost" href="assets/REFINEMENT_REPORT.pdf">Download full report (PDF)</a>
+    </div>
+  </section>
+
+  <section class="section narrow" id="peer-review">
+    <h2>Peer review</h2>
+    <p>I reviewed <strong>Jesse Moroni Milton's</strong> project, <strong>Heritage Vault 2.0</strong> — a system architecture proposal for secure genealogical record storage.</p>
+
+    <h4>Technical assessment</h4>
+    <p>The refinements are well-scoped: a tiered visibility system (public / family-only / private), a consent flag for records of living individuals, continuous security monitoring, accessibility requirements, and a "vault successor" inheritance role. Tying the security refinement directly to a real, named case (the 2018 MyHeritage breach) rather than a generic "we added security" statement was a strength. My main technical note was that, as a proposal rather than an implementation, a few claims — like how tiered visibility is enforced at the data layer, and what specific data-model change solves the scalability problem — could use more concrete detail.</p>
+
+    <h4>Ethical integration evaluation</h4>
+    <p>This was the strongest part of the submission. The consent question — that a living relative didn't necessarily agree to have her information stored in a system she doesn't control — is specific and well-reasoned, not a generic privacy statement. I raised one open question in return: the consent flag requires acknowledgment before sharing a living relative's record, but it isn't clear who is empowered to grant that consent on the relative's behalf when they aren't the one using the system.</p>
+
+    <h4>Constructive feedback given</h4>
+    <ul class="materials-list">
+      <li><span class="material-cite">Technical:</span> name the specific data-model approach (e.g., graph-based structure) that solves the scalability challenge.</li>
+      <li><span class="material-cite">Ethical:</span> name who can exercise consent on behalf of a living person who isn't the vault's user.</li>
+      <li><span class="material-cite">What I'm borrowing:</span> tying each refinement to a specific, named real-world case rather than describing it in the abstract — Jesse did this more consistently than I did in my own first draft.</li>
+    </ul>
+
+    <p class="project-note">Full written review: <a href="assets/Peer_Review_Jesse_Milton.pdf">download the complete peer review (PDF)</a>.</p>
   </section>
 
   <section class="section narrow" id="ethics">

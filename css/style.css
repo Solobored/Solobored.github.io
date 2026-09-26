@@ -182,6 +182,21 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
   margin-bottom: 4px;
 }
 
+/* CODE BLOCKS */
+.code-block {
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  margin: 12px 0 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--paper);
+}
+.code-block code { font-family: inherit; white-space: pre; }
+
 #ethics h4, #reflection h4 { color: var(--teal); margin-top: 1.4em; }
 
 .ref-entry { padding-left: 28px; text-indent: -28px; color: var(--fog); font-size: 0.95rem; }
