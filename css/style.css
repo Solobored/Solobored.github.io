@@ -49,7 +49,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 /* NAV */
 .topnav {
   position: sticky; top: 0; z-index: 20;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
   padding: 18px 32px;
   background: rgba(14, 20, 27, 0.85);
   backdrop-filter: blur(8px);
@@ -61,6 +61,19 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 .nav-links a { color: var(--fog); font-size: 0.92rem; margin-left: 24px; }
 .nav-links a:first-child { margin-left: 0; }
 .nav-links a:hover { color: var(--paper); text-decoration: none; }
+
+.nav-toggle {
+  display: none;
+  width: 34px; height: 34px;
+  padding: 7px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.nav-toggle-bars { display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; }
+.nav-toggle-bars span { display: block; width: 100%; height: 2px; background: var(--paper); border-radius: 2px; }
+.nav-toggle:hover { border-color: var(--line); }
 
 /* HERO */
 .hero {
@@ -116,6 +129,23 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 .principles-list { display: flex; flex-direction: column; gap: 44px; }
 .principle h3 { margin-bottom: 0.3em; }
 .principle p { color: var(--fog); margin-bottom: 0; }
+
+/* SEED MAP (Task 3 mental map) */
+.seed-map {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 32px;
+  margin-top: 36px;
+}
+.seed-stem { width: 80px; height: 100%; }
+.seed-path { fill: none; stroke: var(--teal); stroke-width: 1.6; opacity: 0.8; }
+.seed-leaf { stroke: var(--gold); stroke-width: 1.4; opacity: 0.7; stroke-linecap: round; }
+.seed-node { fill: var(--ink); stroke: var(--teal); stroke-width: 1.6; }
+.seed-node-fruit { fill: var(--gold); stroke: var(--gold); }
+.seed-list { display: flex; flex-direction: column; gap: 40px; }
+.seed-stage h3 { margin-bottom: 0.25em; }
+.seed-scripture { color: var(--gold); font-size: 0.85rem; font-style: italic; margin-bottom: 0.5em; }
+.seed-stage p:last-child { color: var(--fog); margin-bottom: 0; }
 
 /* PROJECTS */
 .project {
@@ -224,9 +254,23 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 }
 
 @media (max-width: 640px) {
-  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .nav-links {
+    display: none;
+    width: 100%;
+    order: 3;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+    margin-top: 14px;
+    padding: 10px 0 4px;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { margin-left: 0; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .nav-links a:last-child { border-bottom: none; }
   .principles-graph { grid-template-columns: 1fr; }
   .weave { display: none; }
+  .seed-map { grid-template-columns: 1fr; }
+  .seed-stem { display: none; }
   .skills-grid { grid-template-columns: 1fr; }
   .hero { padding: 90px 20px 70px; }
 }
